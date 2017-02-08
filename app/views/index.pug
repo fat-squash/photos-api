@@ -1,0 +1,40 @@
+extends layout.pug
+block content
+  h1 hello!
+
+  form(action="/user" method="POST" enctype="multipart/form-data")
+    .form-group
+      input(name="name" placeholder="Имя")
+    .form-group
+      input(name="date" type="date" value="Tue Feb 07 2017 15:48:31 GMT+0300 (MSK)")
+    .form-group
+      input(name="avatar" type="file")
+    .form-group
+      button.btn.btn-primary(type="submit" value="Отправить") Отправить
+  #users.container
+
+  script(type="text/javascript").
+    'use strict'
+    $.ajax({
+      type: 'GET',
+      dataType: 'json',
+      url: '/users',
+    }).done( data => {
+      console.log(data)
+      data.forEach( item => {
+      const {username, image} = item
+      $('#users').append($(`
+        <div class="item">
+          <p>${username}</p>
+          <img width="100" src="${image}" alt="${username}"/>
+        </div>
+      `))
+      })
+    })
+    //- var formData = new FormData(document.forms.person);
+    //-
+    //- formData.append("patronym", "Робертович");
+    //-
+    //- var xhr = new XMLHttpRequest();
+    //- xhr.open("POST", "/user");
+    //- xhr.send(formData);
