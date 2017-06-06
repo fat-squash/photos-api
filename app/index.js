@@ -7,10 +7,7 @@ import json from 'koa-json'
 import multer from 'koa-multer'
 import path from 'path'
 import serve from 'koa-static'
-
-import bodyParser from 'koa-bodyparser'
 import koaBody from 'koa-body'
-
 import logger from 'koa-logger'
 import router from './router'
 import pug from 'js-koa-pug'
@@ -18,13 +15,7 @@ import methodOverride from 'koa-methodoverride'
 import passport from 'koa-passport'
 
 const app = new Koa()
-
-app.use( convert(
-  bodyParser({
-    extendTypes: { json: ['application/x-javascript'] },
-    detectJSON: ctx => /\.json$/i.test(ctx.path)
-  })
-) )
+app.proxy = true
 app.use( pug('./app/views') )
 app.use( router.routes() )
 app.use( router.allowedMethods() )
@@ -32,26 +23,20 @@ app.use( convert( json() ) )
 app.use( convert( logger() ) )
 app.use( convert( serve('public') ) )
 
-const uploadDir = path.join(__dirname, '../uploads')
+const uploadDir = path.join(__dirname, '..', '/public' + '/uploads')
+app.use( koaBody( { multipart: true, formidable: { uploadDir } } ) )
 
-app.use(koaBody({
-  multipart: true,
-  formidable: { uploadDir }
-}))
+app.keys = ['___secret___sl34l342l23l540sgds0hh']
+app.use( ctx => session(app) )
+app.use( ctx => passport.initialize() )
+app.use( ctx => passport.session() )
 
-
-
-// app.keys = ['secret']
-// app.use( async (ctx, next) => session(app) )
-// app.use( async (ctx, next) => passport.initialize() )
-// app.use( async (ctx, next) => passport.session() )
-// app.use( async (ctx, next) => {
-//   try {
-//     await next()
-//   } catch (err) {
-//     ctx.body = { message: err.message }
-//     ctx.status = err.status || 500
-//   }
-// })
+app.use(function(ctx, next) {
+  if (ctx.isAuthenticated()) {
+    return next()
+  } else {
+    ctx.redirect('/')
+  }
+})
 
 app.listen(4000)

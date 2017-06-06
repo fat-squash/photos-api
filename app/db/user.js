@@ -1,8 +1,6 @@
 import Sequelize from 'sequelize'
 import sequelize from './dbConfig'
-import {copyFile, genHash} from '../utils'
-
-
+import {copyFile, removeFile, genHash} from '../utils'
 
 const User = sequelize.define('user', {
   id: {
@@ -27,7 +25,7 @@ export function findUserById(id) {
 
 export function createUser(username, birthday, files) {
 
-  sequelize
+  const seq = sequelize
     .sync()
     .then( () => {
       let image = ''
@@ -36,11 +34,16 @@ export function createUser(username, birthday, files) {
         image = `/uploads/${imageName}`
         copyFile(file.path, imageName)
       } )
+
       return User.create({ username, birthday, image})
     })
-    .then( (user) => {
-      console.log(
-        user.get({plain: true})
-      )
-    } )
+  return seq
+}
+
+export async function deleteUserById(id) {
+  await User.findOne({where: {id: id}}).then( data => {
+    const {image} = data.dataValues
+    removeFile(image)
+  })
+  return await User.destroy({where: {id: id}})
 }

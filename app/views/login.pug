@@ -1,0 +1,19 @@
+extends layout.pug
+block content
+  form(action='/login', method='post')
+    p
+      label
+        | Username:
+        input(type='text', name='username', value='test')
+    p
+      label
+        | Password:
+        input(type='password', name='password', value='test')
+    p
+      button(type='submit') Log In
+    p
+      a(href='/auth/facebook') Sign in with Facebook
+      br
+      a(href='/auth/twitter') Sign in with Twitter
+      br
+      a(href='/auth/google') Sign in with Google

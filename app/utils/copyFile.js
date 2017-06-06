@@ -1,8 +1,9 @@
 import fs from 'fs'
+import path from 'path'
 import saveTo from 'save-to'
 // import asyncBusboy from 'async-busboy'
 
-export default function copyFile(path, filename) {
+export function copyFile(path, filename) {
   const stream = fs.createReadStream(path)
 
   saveTo(stream, `./public/uploads/${filename}`, (err, dest) => {
@@ -12,6 +13,11 @@ export default function copyFile(path, filename) {
       console.log('destination', dest)
     }
   } )
+}
+
+export function removeFile(filePath) {
+  const url = path.join(__dirname, '../', '../', 'public' + filePath)
+  fs.unlinkSync(url)
 }
 
 // async function(ctx, next) {
