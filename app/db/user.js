@@ -14,9 +14,7 @@ const User = sequelize.define('user', {
 })
 
 export function showUsers() {
-  const all = User.findAll()
-  all.then( data => console.log(data.dataValues) )
-  return all
+  return User.findAll()
 }
 
 export function findUserById(id) {

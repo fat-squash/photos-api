@@ -22,9 +22,31 @@ body, html {
   box-shadow: 2px 2px 10px rgba(0,0,0,0.5);
   background: rgba(255,255,255,0.5);
   text-align: center;
+  position: relative;
+  max-width: 200px;
 }
 
 .item p {
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.item > * {
+  margin: 10%;
+  width: 80%;
+}
+
+.item strong {
+  margin: 0;
+  width: 100%;
+}
+
+.item__remove {
+  background: red;
+  width: 10px;
+  height: 10px;
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  cursor: pointer;
 }

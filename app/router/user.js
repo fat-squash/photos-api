@@ -20,7 +20,6 @@ export default function user(router) {
     .then( newUser => {
       ctx.body = newUser.dataValues
     })
-    // return await showUsers().then( data => ctx.body = data )
   })
 
   router.delete('/user/:id', (ctx) => {

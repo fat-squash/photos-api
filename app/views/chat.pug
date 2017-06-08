@@ -1,0 +1,17 @@
+extends layout.pug
+block content
+  link(href="/stylesheets/chat.css"  media="all" rel="stylesheet")
+  //- button.js-btn Send
+  //- button.js-ack
+  //-   | Send
+  //-   span.small (with acknowledgement)
+  //- button.js-chatBtn Chat
+
+  form(id="send-message")
+    input.input.input--chat(type="text" name="message")
+    button.button.button--send Отправить
+  section#messages
+  .connections
+    span.js-connect 1
+  script(type="text/javascript" src="https://cdn.socket.io/socket.io-1.4.5.js")
+  script(type="text/javascript" src="/socket.js")

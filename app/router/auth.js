@@ -1,6 +1,8 @@
 import passport from 'koa-passport'
 import authStrategy from './authStrategy'
-export default function auth(router) {
+import router from './router'
+
+function auth(router) {
   // router.get('/login', async ctx => await ctx.render('login') )
 
 
